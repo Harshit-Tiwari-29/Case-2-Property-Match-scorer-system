@@ -1,0 +1,37 @@
+# Core
+python-dotenv
+pandas
+numpy
+
+# LLM
+groq
+
+# Embeddings
+sentence-transformers
+
+# Vector DB
+chromadb
+
+# ML / Search
+scikit-learn
+
+# Agents / Graph
+langchain
+langgraph
+
+# API
+fastapi
+uvicorn
+
+# UI
+streamlit
+requests
+
+# Utils
+tqdm
+
+openpyxl
+langchain-groq
+fastmcp
+mcp
+plotly
