@@ -19,9 +19,6 @@ scikit-learn
 langchain
 langgraph
 
-# API
-fastapi
-uvicorn
 
 # UI
 streamlit
@@ -32,6 +29,5 @@ tqdm
 
 openpyxl
 langchain-groq
-fastmcp
-mcp
+
 plotly
