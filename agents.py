@@ -10,7 +10,7 @@ load_dotenv()  # <--- ADD THIS (It loads variables from .env)
 # --- 1. CONFIGURATION ---
 # # Ensure your API key is set in your environment or .env file
 # GROQ_API_KEY = os.environ["GROQ_API_KEY"]
-llm = ChatGroq(model="openai/gpt-oss-120b", temperature=0)
+llm = ChatGroq(model="llama3-8b-8192", temperature=0)
 
 # --- 2. STATE DEFINITION ---
 class AgentState(TypedDict):
