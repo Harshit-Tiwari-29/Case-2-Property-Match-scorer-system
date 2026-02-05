@@ -4,7 +4,7 @@ import plotly.express as px
 from agents import app_graph # Import the LangGraph application
 
 # Setup
-st.set_page_config(layout="wide", page_title="Agent Mira | Multi-Agent RAG")
+st.set_page_config(layout="wide", page_title="Property Match Recommender")
 USER_DB = "data/users.csv"
 
 # --- SIDEBAR: USER SELECTION ---
