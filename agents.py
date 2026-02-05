@@ -3,16 +3,11 @@ import json
 from typing import TypedDict, List, Dict, Any
 from langgraph.graph import StateGraph, END
 from langchain_groq import ChatGroq
-from tools import hybrid_search_tool  # <--- Importing your custom tool
-from dotenv import load_dotenv  # <--- ADD THIS
-
-load_dotenv()  # <--- ADD THIS (It loads variables from .env)
-# --- 1. CONFIGURATION ---
-# # Ensure your API key is set in your environment or .env file
-# GROQ_API_KEY = os.environ["GROQ_API_KEY"]
+from tools import hybrid_search_tool 
+from dotenv import load_dotenv  
+load_dotenv() 
 llm = ChatGroq(model="llama3-8b-8192", temperature=0)
 
-# --- 2. STATE DEFINITION ---
 class AgentState(TypedDict):
     user_input: str                 # Raw input from user
     optimized_query: str            # Semantic search string
@@ -20,7 +15,7 @@ class AgentState(TypedDict):
     retrieved_properties: List[Dict]# Results from the Tool
     final_response: List[Dict]      # Scored & Sorted matches
 
-# --- 3. AGENT: QUERY TRANSFORMATION ---
+# --- QUERY TRANSFORMATION ---
 def query_transform_agent(state: AgentState):
     """
     Role: Transform raw user query into a 'Hybrid Search' query.
@@ -46,10 +41,8 @@ def query_transform_agent(state: AgentState):
             "filters": data.get("filters", {})
         }
     except:
-        # Fallback if JSON parsing fails
         return {"optimized_query": state["user_input"], "filters": {}}
 
-# --- 4. AGENT: RAG TOOL (HYBRID SEARCH) ---
 def rag_tool_agent(state: AgentState):
     """
     Role: Orchestrates the search by calling the 'hybrid_search_tool'.
@@ -59,8 +52,6 @@ def rag_tool_agent(state: AgentState):
     query = state["optimized_query"]
     filters = state["filters"]
     
-    # CALL THE TOOL
-    # We pass the arguments extracted by the Transformation Agent
     try:
         results = hybrid_search_tool.invoke({
             "query": query,
@@ -73,7 +64,6 @@ def rag_tool_agent(state: AgentState):
     
     return {"retrieved_properties": results}
 
-# --- 5. AGENT: MATCH SCORE CALCULATOR ---
 def match_score_agent(state: AgentState):
     """
     Role: Calculate 'Match Score' (0-100) using LLM reasoning.
@@ -112,7 +102,7 @@ def match_score_agent(state: AgentState):
                 "id": prop.get("id"),
                 "score": score_data["score"],
                 "reason": score_data["reason"],
-                "details": prop # Pass full details through for the UI
+                "details": prop 
             })
         except:
             continue
@@ -122,7 +112,6 @@ def match_score_agent(state: AgentState):
     
     return {"final_response": results}
 
-# --- 6. ORCHESTRATION (LANGGRAPH) ---
 workflow = StateGraph(AgentState)
 
 # Add Nodes
